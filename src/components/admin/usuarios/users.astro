@@ -1,0 +1,48 @@
+<div class="antialiased bg-gray-50 ">
+    <div class="p-4 sm:ml-64 bg-gray-50">
+      <div class="py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+         <div class="max-w-screen-md mb-8 lg:mb-16">
+             <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 ">Usuarios</h2>
+             <div class="grid grid-cols-2 grid-rows-1 gap-4">
+                 <div class="col-start-2 row-start-1">
+                   <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 24 24"><path fill="#666666" d="M11 13H5v-2h6V5h2v6h6v2h-6v6h-2z"/></svg>
+                 </div>
+                 <div class="col-start-1 row-start-1">
+                   <div class="relative">
+                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                         <svg class="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+                         </svg>
+                     </div>
+                     <input type="search" id="default-search" class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 " placeholder="Buscar" required />
+                     <button type="submit" class="text-white absolute end-2.5 bottom-2.5 bg-green-500 hover:bg-green-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2">Search</button>
+                   </div>
+                 </div>
+             </div>              
+         </div>
+         <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0" *ngIf="activeSection === 'aulas'">
+             <div class="border border-gray-200 rounded-md p-4" *ngFor="let aula of aulas">
+                 <h3 class="mb-2 text-xl font-bold ">Usuario1</h3>
+                 <p class="text-gray-500 ">edfd</p>
+                
+             </div>
+             <div class="border border-gray-200 rounded-md p-4" *ngFor="let aula of aulas">
+               <h3 class="mb-2 text-xl font-bold ">Usuario1</h3>
+               <p class="text-gray-500 ">edfd</p>
+              
+           </div>
+           <div class="border border-gray-200 rounded-md p-4" *ngFor="let aula of aulas">
+             <h3 class="mb-2 text-xl font-bold ">Usuario1</h3>
+             <p class="text-gray-500 ">edfd</p>
+            
+         </div>
+            
+         </div>
+     </div>
+
+ </div>
+
+
+
+</div>
+

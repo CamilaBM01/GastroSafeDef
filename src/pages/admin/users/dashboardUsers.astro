@@ -1,0 +1,17 @@
+---
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro";
+import Users from "../../../components/admin/usuarios/users.astro";
+import Layout from "../../../layouts/Layout.astro";
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+
+
+
+---
+<LayoutAdmin>
+	<Users>
+   
+</LayoutAdmin>   

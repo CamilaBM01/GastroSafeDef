@@ -1,0 +1,17 @@
+---
+import Layout from "@/layouts/Layout.astro";
+import LoginComponent from "@/components/loginComponent.astro"
+
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+
+
+
+---
+<Layout>
+	<LoginComponent>
+   
+</Layout>   
