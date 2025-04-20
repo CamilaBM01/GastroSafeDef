@@ -1,8 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import dotenv from 'dotenv'
-
-import tailwindcss from '@tailwindcss/vite';
+import tailwind from "@astrojs/tailwind";
 
 dotenv.config();
 
@@ -11,8 +10,7 @@ dotenv.config();
 // https://astro.build/config
 export default defineConfig({
   output: "server",
+  integrations: [tailwind()],
 
-  vite: {
-    plugins: [tailwindcss()]
-  }
+
 });

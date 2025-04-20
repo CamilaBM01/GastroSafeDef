@@ -1,0 +1,33 @@
+---
+import Forms from "@/components/admin/forms/Forms.astro";
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro";
+import { insertUser } from "@/repository/users";
+import { insertRestaurant } from "@/repository/restaurants";
+import { createUser } from "@/services/createUser";
+import { createRestaurant } from "@/services/createRestaurant";
+if (Astro.request.method === "POST") {
+  try {
+    let data = await Astro.request.formData();
+    const formId = data.get("formId");
+    if (formId === "add_user") {
+      const user:IUser = await createUser(data);
+      await insertUser(user);
+    } else if (formId === "add_restaurant") {
+      const restaurant:IRestaurant = await createRestaurant(data);
+      await insertRestaurant(restaurant);
+    } else {
+      console.error("Form ID no reconocido:", formId); // Depuración
+    }
+    
+  }catch (error) {
+      console.error("Error procesando el form", error);
+  }
+}
+
+---
+
+<LayoutAdmin >
+ 
+    <Forms/>
+
+</LayoutAdmin>   

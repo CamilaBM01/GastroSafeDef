@@ -1,18 +1,26 @@
 ---
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro";
-import Users from "../../../components/admin/usuarios/users.astro";
-import Layout from "../../../layouts/Layout.astro";
+import Users from "@/components/admin/usuarios/users.astro";
+import { getUserFromSession } from "@/repository/users";
+
 
 if (Astro.locals.user === null) {
   return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
 }
 
+const cookies = Astro.cookies;
+const sessionId = cookies.get("session")?.value;
 
+let user = null;
+if (sessionId) {
+  user = await getUserFromSession(sessionId);
+}
 
 
 
 ---
-<LayoutAdmin>
-	<Users>
-   
+<LayoutAdmin adminName={user?.name} adminEmail={user?.email}>
+ 
+	  <Users>
+  
 </LayoutAdmin>   

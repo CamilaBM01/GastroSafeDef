@@ -1,15 +1,11 @@
----
-import { listUsers } from "@/repository/users";
 
-
-const users = await listUsers();
----
-  <div class="bg-white rounded-lg border border-gray-20 py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
+<div class="bg-white rounded-lg border border-gray-20 py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
     <div class="max-w-screen-md mb-8 lg:mb-16">
       <h2 class="mb-4 text-4xl tracking-tight font-extrabold text-gray-900 pb-6">
-        Usuarios
+        Restaurants
       </h2>
 
+      
       <!-- CONTENIDO INTERIOR -->
       <div class="grid grid-cols-2 grid-rows-1 gap-4">
         <!-- Icono -->
@@ -42,16 +38,23 @@ const users = await listUsers();
 
     <!-- Tarjetas de usuario -->
     <div class="space-y-8 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-12 md:space-y-0">
-      {users.map(user => (
-        <a href={`/admin/users/userDetails/${user.id}`} class="block">
-          <div class="border border-gray-200 rounded-md p-4 hover:shadow">
-            {user.photo && (
-              <img src={user.photo} alt="Foto de perfil" class="w-20 h-20 rounded-full mb-2 object-cover" />
-            )}
-            <h3 class="mb-2 text-xl font-bold">{user.name} {user.surname}</h3>
-            <p class="text-gray-500">{user.email}</p>
-          </div>
-        </a>
-      ))}
+      <a href="/admin/restaurants/restaurantDashboard">
+        <div class="border border-gray-200 rounded-md p-4">
+          <h3 class="mb-2 text-xl font-bold ">Restaurant1</h3>
+          <p class="text-gray-500 ">edfd</p>
+        </div>
+      </a>
+      <div class="border border-gray-200 rounded-md p-4">
+        <h3 class="mb-2 text-xl font-bold ">Restaurant1</h3>
+        <p class="text-gray-500 ">edfd</p>
+      </div>
+      <div class="border border-gray-200 rounded-md p-4">
+        <h3 class="mb-2 text-xl font-bold ">Restaurant1</h3>
+        <p class="text-gray-500 ">edfd</p>
+      </div>
+      <div class="border border-gray-200 rounded-md p-4">
+        <h3 class="mb-2 text-xl font-bold ">Restaurant1</h3>
+        <p class="text-gray-500 ">edfd</p>
+      </div>
     </div>
   </div>

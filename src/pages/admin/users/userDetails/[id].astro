@@ -1,0 +1,16 @@
+---
+import User from "@/components/admin/usuarios/user.astro";
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro";
+import { findUser } from "@/repository/users";
+
+// Obtiene el id del usuario
+const { id } = Astro.params;
+const user = await findUser(+id!);
+if (!user) {
+  return Astro.redirect("/404"); 
+}
+
+---
+<LayoutAdmin >
+    <User user={user}>
+</LayoutAdmin>   

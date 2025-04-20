@@ -1,4 +1,4 @@
-import { mysqlTable, int, varchar, datetime, boolean } from 'drizzle-orm/mysql-core';
+import { mysqlTable, int, varchar, datetime, boolean, text } from 'drizzle-orm/mysql-core';
 
 // Tabla de roles
 export const roleTable = mysqlTable('roles', {
@@ -13,6 +13,8 @@ export const userTable = mysqlTable('users', {
   surname: varchar('surname', { length: 255 }).notNull(),
   email: varchar('email', { length: 255 }).notNull(),
   password: varchar('password', { length: 255 }).notNull(),
+  digestive_condition: varchar('digestive_condition', { length: 255 }),
+  photo: text('photo'),
   roleId: int('role_id').references(() => roleTable.id),
   createdAt: datetime('created_at')
 });
