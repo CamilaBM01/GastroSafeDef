@@ -1,6 +1,6 @@
  // tu conexión Drizzle
-import { eq } from "drizzle-orm";
-import { restaurantTable, reviewTable, sessionTable, userTable } from "@/lib/schema"; // ajusta el path si es distinto
+import { eq, or } from "drizzle-orm";
+import { favoriteTable, followerTable, restaurantTable, reviewTable, sessionTable, userTable } from "@/lib/schema"; // ajusta el path si es distinto
 import { db } from "@/lib/db";
 
 export async function getUserFromSession(sessionId: string) {
@@ -97,4 +97,28 @@ export const getReviewsByUser = async (userId: number) => {
   .from(reviewTable)
   .innerJoin(restaurantTable, eq(reviewTable.restaurantId, restaurantTable.id))
   .where(eq(reviewTable.userId, userId));
+};
+
+export const deleteUserById = async (userId: number) => {
+  await db.transaction(async (tx) => {
+    // Eliminar reseñas del usuario
+    await tx.delete(reviewTable).where(eq(reviewTable.userId, userId));
+
+    // Eliminar favoritos donde es el usuario
+    await tx.delete(favoriteTable).where(eq(favoriteTable.userId, userId));
+
+    // Eliminar seguidores: donde él sigue o lo siguen
+    await tx.delete(followerTable).where(
+      or(
+        eq(followerTable.followerId, userId),
+        eq(followerTable.followedId, userId)
+      )
+    );
+
+    // Eliminar sesiones del usuario
+    await tx.delete(sessionTable).where(eq(sessionTable.userId, userId));
+
+    // Finalmente, eliminar al usuario
+    await tx.delete(userTable).where(eq(userTable.id, userId));
+  });
 };
