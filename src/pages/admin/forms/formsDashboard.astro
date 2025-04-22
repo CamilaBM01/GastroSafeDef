@@ -1,10 +1,13 @@
 ---
 import Forms from "@/components/admin/forms/Forms.astro";
 import LayoutAdmin from "@/layouts/LayoutAdmin.astro";
-import { insertUser } from "@/repository/users";
-import { insertRestaurant } from "@/repository/restaurants";
+import { insertEditUser, insertUser } from "@/repository/users";
+import { insertEditRestaurant, insertRestaurant } from "@/repository/restaurants";
 import { createUser } from "@/services/createUser";
 import { createRestaurant } from "@/services/createRestaurant";
+import UpdateUser from "@/components/admin/forms/updateUser.astro";
+import {updateRestaurant} from "@/services/update/updateRestaurant";
+
 if (Astro.request.method === "POST") {
   try {
     let data = await Astro.request.formData();
@@ -15,7 +18,13 @@ if (Astro.request.method === "POST") {
     } else if (formId === "add_restaurant") {
       const restaurant:IRestaurant = await createRestaurant(data);
       await insertRestaurant(restaurant);
-    } else {
+    }else if (formId === "update_user"){
+      const updatedUser = await UpdateUser(data);
+      await insertEditUser(updatedUser);
+    }else if (formId === "update_restaurant"){
+        const updatedRestaurant = await updateRestaurant(data);
+        await insertEditRestaurant(updatedRestaurant);
+      }else {
       console.error("Form ID no reconocido:", formId); // Depuración
     }
     

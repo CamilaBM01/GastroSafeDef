@@ -99,6 +99,7 @@ export const getReviewsByUser = async (userId: number) => {
   .where(eq(reviewTable.userId, userId));
 };
 
+
 export const deleteUserById = async (userId: number) => {
   await db.transaction(async (tx) => {
     // Eliminar reseñas del usuario

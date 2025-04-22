@@ -1,0 +1,17 @@
+---
+import Restaurant from "@/components/admin/restaurants/Restaurant.astro";
+import LayoutAdmin from "@/layouts/LayoutAdmin.astro";
+import { findRestaurant } from "@/repository/restaurants";
+
+// Obtiene el id del usuario
+const { id } = Astro.params;
+
+const restaurant = await findRestaurant(+id!);
+if (!restaurant) {
+  return Astro.redirect("/404"); 
+}
+
+---
+<LayoutAdmin >
+    <Restaurant restaurant={restaurant} restaurantId={restaurant.id} >
+</LayoutAdmin>   

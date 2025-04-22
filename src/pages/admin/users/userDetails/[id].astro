@@ -5,6 +5,8 @@ import { findUser } from "@/repository/users";
 
 // Obtiene el id del usuario
 const { id } = Astro.params;
+const {userId} = Astro.props;
+
 const user = await findUser(+id!);
 if (!user) {
   return Astro.redirect("/404"); 
@@ -12,5 +14,5 @@ if (!user) {
 
 ---
 <LayoutAdmin >
-    <User user={user}>
+    <User user={user} userId={user.id} >
 </LayoutAdmin>   

@@ -25,7 +25,7 @@ export const restaurantTable = mysqlTable('restaurants', {
   name: varchar('name', { length: 255 }).notNull(),
   address: varchar('address', { length: 255 }).notNull(),
   website: varchar('website', { length: 255 }),
-  mapsUrl: varchar('maps_url', { length: 255 }),
+  maps_url: varchar('maps_url', { length: 255 }),
   photo: varchar('photo', { length: 255 }),
 });
 
