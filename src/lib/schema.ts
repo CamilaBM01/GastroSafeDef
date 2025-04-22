@@ -15,8 +15,8 @@ export const userTable = mysqlTable('users', {
   password: varchar('password', { length: 255 }).notNull(),
   digestive_condition: varchar('digestive_condition', { length: 255 }),
   photo: text('photo'),
-  roleId: int('role_id').references(() => roleTable.id),
-  createdAt: datetime('created_at')
+  role_id: int('role_id').references(() => roleTable.id),
+  created_at: datetime('created_at')
 });
 
 // Tabla de restaurantes

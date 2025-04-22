@@ -5,8 +5,9 @@ import { insertEditUser, insertUser } from "@/repository/users";
 import { insertEditRestaurant, insertRestaurant } from "@/repository/restaurants";
 import { createUser } from "@/services/createUser";
 import { createRestaurant } from "@/services/createRestaurant";
-import UpdateUser from "@/components/admin/forms/updateUser.astro";
+
 import {updateRestaurant} from "@/services/update/updateRestaurant";
+import { updateUser } from "@/services/update/updateUser";
 
 if (Astro.request.method === "POST") {
   try {
@@ -19,7 +20,7 @@ if (Astro.request.method === "POST") {
       const restaurant:IRestaurant = await createRestaurant(data);
       await insertRestaurant(restaurant);
     }else if (formId === "update_user"){
-      const updatedUser = await UpdateUser(data);
+      const updatedUser = await updateUser(data);
       await insertEditUser(updatedUser);
     }else if (formId === "update_restaurant"){
         const updatedRestaurant = await updateRestaurant(data);

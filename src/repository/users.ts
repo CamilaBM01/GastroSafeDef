@@ -53,7 +53,7 @@ export const insertEditUser = async(user:IUser):Promise<boolean>=>{
                                 email: user.email,
                                 digestive_condition: user.digestive_condition,
                                 photo: user.photo,
-                                roleId: user.roleId
+                                role_id: user.role_id
                             })
                             .where(eq(userTable.id, user.id))
                             console.log("Usuaeio actualizado:", result);
