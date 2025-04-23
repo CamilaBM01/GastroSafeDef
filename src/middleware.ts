@@ -3,7 +3,7 @@
 import { defineMiddleware } from "astro:middleware";
 import { validateUserSession, setSessionTokenCookie, deleteSessionTokenCookie } from "./lib/auth";  // Importa las funciones necesarias
 
-const publicRoutes = ["/login", "/register",  "/api/signin"];
+const publicRoutes = ["/login", "/register",  "/api/signin", "/register/success", "/api/register"];
 
 export const onRequest = defineMiddleware(async (context, next) => {
   const token = context.cookies.get("session")?.value ?? null;

@@ -1,5 +1,5 @@
 // src/pages/api/login.ts
-
+/*
 import argon2 from 'argon2'; // Para encriptar la contraseña
 import { db, userTable } from '../../lib/db'; // Conexión a tu base de datos
 import { eq } from 'drizzle-orm';
@@ -47,3 +47,4 @@ export async function post({ request }: { request: Request }) {
 export function generateSessionToken(): string {
   return crypto.randomUUID(); // Generamos un token único (usando el estándar UUID)
 }
+  /*/
