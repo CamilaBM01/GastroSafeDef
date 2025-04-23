@@ -1,12 +1,13 @@
 ---
 import DeleteModal from "@/components/modals/deleteModal.astro";
+import DeleteReviewModal from "@/components/modals/review/deleteReviewModal.astro";
 import UpdateUserModal from "@/components/modals/updateUserModal.astro";
 import { getReviewsByUser } from "@/repository/users";
 
-const {user, userId} = Astro.props;
+const {user, userId, review} = Astro.props;
 
 const reviews = await getReviewsByUser(userId);
-console.log('REVIEWS', reviews);
+console.log('REVIEWS', review);
 console.log('USER ID', userId);
 
 ---
@@ -90,10 +91,15 @@ console.log('USER ID', userId);
          <!--RESEÑA 1 -->
          {reviews.map((review) => (
          <div class="py-3 md:py-3">
+         
             <div class="mb-4 space-y-4 p-6 transition hover:shadow-md">
+              
               <div class="border-t-2 border-gray-200 pt-4">
+                
                 <div class="flex justify-between items-center">
+                  
                   <h3 class="text-lg font-bold text-gray-900">{review.restaurantName}</h3>
+                  
                   <span class="text-sm text-gray-500">
                     {review.createdAt ? new Date(review.createdAt).toLocaleDateString("es-ES", {
                       year: "numeric",
@@ -101,6 +107,9 @@ console.log('USER ID', userId);
                       day: "numeric",
                     }) : 'Fecha no disponible'}
                   </span>
+                  <button type="button" id="deleteReviewButton" data-modal-target="deleteReviewModal" data-modal-toggle="deleteReviewModal" class="mt-4 mr-4 text-red-700 hover:text-white border border-red-100 bg-red-100 hover:bg-red-400 focus:ring-4 focus:outline-none focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"><path fill="none" stroke="#e11d48" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7h16m-10 4v6m4-6v6M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2l1-12M9 7V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v3"/></svg>
+                  </button>
                 </div>
 
                 <p class="text-gray-700 leading-relaxed">
@@ -118,12 +127,14 @@ console.log('USER ID', userId);
               </div>
             </div>
           </div>
+          <DeleteReviewModal user={user} review={review}/>
            ))}
          <!--FIN reseña1-->
         
        </div>
        <DeleteModal user={user}/>
        <UpdateUserModal user={user}/>
+       
    </div>
 
 

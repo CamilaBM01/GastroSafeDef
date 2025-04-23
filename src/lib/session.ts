@@ -11,6 +11,7 @@ export type User = {
 };
 
 export type Session = {
+  [x: string]: any;
   id: string;
   userId: number;
   expiresAt: Date;
