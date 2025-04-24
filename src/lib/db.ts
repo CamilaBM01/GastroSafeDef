@@ -7,7 +7,7 @@ import mysql from 'mysql2/promise';
 
 // 3. Importa drizzle-orm y las tablas que has definido en el esquema
 import { drizzle } from 'drizzle-orm/mysql2';
-import { userTable, sessionTable, restaurantTable } from './schema';  
+import { userTable, sessionTable } from './schema';  
 
 // 4. Crea la conexión a la base de datos usando las variables de entorno
 const connection = await mysql.createConnection({

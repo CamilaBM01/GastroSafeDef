@@ -1,5 +1,5 @@
  // tu conexión Drizzle
-import { eq, or } from "drizzle-orm";
+import { eq, or, like } from "drizzle-orm";
 import { favoriteTable, followerTable, restaurantTable, reviewTable, sessionTable, userTable } from "@/lib/schema"; // ajusta el path si es distinto
 import { db } from "@/lib/db";
 
@@ -30,10 +30,33 @@ export const insertUser = async(user:IUser):Promise<boolean>=>{
     return false;
   }
 }
-export const listUsers = async () => {
-  return await db.select().from(userTable);
-};
 
+/**
+ * Función asíncrona para obtener la lista de usuarios desde la base de datos.
+ * Si se pasa un "query" (término de búsqueda), filtra los usuarios según ese término.
+ * Si no se pasa un "query", devuelve todos los usuarios.
+ * 
+ * @param {string} [query] - Término de búsqueda que se usará para filtrar los usuarios (puede ser nombre, apellido o correo electrónico).
+ * @returns {Promise} - Una promesa que resuelve con la lista de usuarios encontrados según el filtro aplicado o todos los usuarios si no se pasa filtro.
+ */                                                               
+export const listUsers = async (query?: string) => {
+  if (!query) {
+    return await db.select().from(userTable);
+  }
+
+  const q = `%${query}%`;
+
+  return await db
+    .select()
+    .from(userTable)
+    .where(
+      or(
+        like(userTable.name, q),
+        like(userTable.surname, q),
+        like(userTable.email, q)
+      )
+    );
+};
 
 /**
  * Funcion para editar un usuario ya existente e insertar los datos cambiados en la bd
