@@ -6,9 +6,6 @@ import { getReviewsByUser } from "@/repository/users";
 const {user, userId} = Astro.props;
 
 const reviews = await getReviewsByUser(userId);
-console.log('REVIEWS', reviews);
-console.log('USER ID', userId);
-
 ---
 <div class="bg-white rounded-lg border border-gray-20 py-8 px-4 mx-auto max-w-screen-xl sm:py-16 lg:px-6">
         <div class="py-6 px-4 mx-auto max-w-screen-xl sm:py-6 lg:px-6">

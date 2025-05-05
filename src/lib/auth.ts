@@ -28,7 +28,7 @@ export async function registerUser( name: string,
   surname: string,
   email: string,
   password: string,
-  roleId: number = 2 ): Promise<void> {
+  role_id: number = 2 ): Promise<void> {
   // Encriptamos la contraseña antes de almacenarla usando argon2.
   const hashedPassword = await argon2.hash(password);
   
@@ -38,8 +38,8 @@ export async function registerUser( name: string,
     surname,
     email,
     password: hashedPassword,
-    roleId,
-    createdAt: sql`NOW()` // Guardamos la contraseña encriptada.
+    role_id,
+    created_at: sql`NOW()` // Guardamos la contraseña encriptada.
   });
 }
 
