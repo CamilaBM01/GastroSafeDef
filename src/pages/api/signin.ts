@@ -43,10 +43,20 @@ export async function POST(context: APIContext) {
     path: "/",
   });
 
+
+
+  //Cambios para diferenciar user y admin:
+  const isAdmin = user[0].role_id === 1;
+  const redirectPath = isAdmin
+    ? "/admin/users/dashboardUsers"
+    : `/user/dashboard/${user[0].id}`;
+
+
+
   return new Response(null, {
     status: 302,
     headers: {
-      Location: "/admin/users/dashboardUsers",
+      Location: redirectPath,
       "Set-Cookie": cookie,
     },
   });

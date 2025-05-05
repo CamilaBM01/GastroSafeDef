@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { desc, eq, or } from "drizzle-orm";
+import { desc, eq, or, like } from "drizzle-orm";
 import { favoriteTable, restaurantTable, reviewTable, userTable } from "@/lib/schema";
 
 export const insertRestaurant = async(restaurant:IRestaurant):Promise<boolean>=>{
@@ -12,8 +12,26 @@ export const insertRestaurant = async(restaurant:IRestaurant):Promise<boolean>=>
     return false;
   }
 }
-export const listRestaurants = async () => {
-  return await db.select().from(restaurantTable);
+// Función para obtener restaurantes desde la base de datos, opcionalmente filtrando por nombre.
+export const listRestaurants = async (query?: string) => {
+  if (!query) {
+    // Si no hay término de búsqueda, devolvemos todos los restaurantes.
+    return await db.select().from(restaurantTable);
+  }
+
+  // Preparamos el término de búsqueda con % para una búsqueda parcial.
+  const q = `%${query}%`;
+
+  // Realizamos la consulta buscando en los campos name y address.
+  return await db
+    .select()
+    .from(restaurantTable)
+    .where(
+      or(
+        like(restaurantTable.name, q),     // Filtra por nombre del restaurante
+        like(restaurantTable.address, q)   // Filtra por dirección del restaurante
+      )
+    );
 };
 
 
@@ -111,3 +129,5 @@ export const getReviewsByRestaurant = async (restaurantId: number) => {
     .where(eq(reviewTable.restaurantId, restaurantId))
     .orderBy(desc(reviewTable.createdAt));
 };
+
+
