@@ -2,6 +2,7 @@
 import { getUserFromSession } from "@/repository/users";
 import LayoutUser from "@/layouts/LayoutUser.astro";
 import DashboardPanel from "@/components/user/dashboardPanel.astro";
+import MyInfoPanel from "@/components/user/myinfo/myInfoPanel.astro";
 
 
 if (Astro.locals.user === null) {
@@ -20,5 +21,5 @@ if (sessionId) {
 
 ---
 <LayoutUser>
-    <DashboardPanel>
+    <MyInfoPanel/>
 </LayoutUser>

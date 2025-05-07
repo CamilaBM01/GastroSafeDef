@@ -1,0 +1,16 @@
+---
+import Layout from "./Layout.astro";
+import Navbar from "@/components/user/navbar.astro";
+const { adminName, adminEmail } = Astro.props;
+
+---
+
+<Layout>
+
+    <Navbar/>
+
+    <!-- Contenido principal -->
+    <main class="bg-backgroundgreen relative p-3 min-h-screen">
+      <slot />
+    </main>
+</Layout>
