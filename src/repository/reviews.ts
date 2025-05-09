@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { favoriteTable, restaurantTable, reviewTable, userTable } from "@/lib/schema";
-import { desc, eq, or } from "drizzle-orm";
+import { count, desc, eq, or } from "drizzle-orm";
 
 /**
  * Obtiene todas las reseñas del sistema, incluyendo la información del usuario que la creó
@@ -104,4 +104,13 @@ export const getAllReviews = async () => {
       // Eliminar la reseña
       await tx.delete(reviewTable).where(eq(reviewTable.id, reviewId));
     });
+  };
+
+  export const countReviewsByUser = async (userId: number) => {
+    const result = await db
+      .select({ total: count() })
+      .from(reviewTable)
+      .where(eq(reviewTable.userId, userId));
+  
+    return result[0]?.total ?? 0;
   };

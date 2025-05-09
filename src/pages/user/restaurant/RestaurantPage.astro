@@ -1,0 +1,24 @@
+---
+import { getUserFromSession } from "@/repository/users";
+import LayoutUser from "@/layouts/LayoutUser.astro";
+import RestaurantInfo from "@/components/user/restaurant/restaurantInfo.astro";
+
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+const cookies = Astro.cookies;
+const sessionId = cookies.get("session")?.value;
+
+let user = null;
+if (sessionId) {
+  user = await getUserFromSession(sessionId);
+}
+
+
+
+---
+<LayoutUser>
+    <RestaurantInfo/>
+</LayoutUser>
