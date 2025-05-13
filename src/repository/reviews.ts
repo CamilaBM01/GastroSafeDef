@@ -114,3 +114,37 @@ export const getAllReviews = async () => {
   
     return result[0]?.total ?? 0;
   };
+
+
+
+  export const getUserReviews = async (userId: number) => {
+    return await db
+      .select({
+        id: reviewTable.id,
+        title: reviewTable.title,
+        description: reviewTable.description,
+        suitable: reviewTable.suitable,
+        createdAt: reviewTable.createdAt,
+        restaurantName: restaurantTable.name,
+        restaurantId: restaurantTable.id,
+      })
+      .from(reviewTable)
+      .innerJoin(restaurantTable, eq(reviewTable.restaurantId, restaurantTable.id))
+      .where(eq(reviewTable.userId, userId));
+  };
+
+  export const getUserFavorites = async (userId: number) => {
+    return await db
+      .select({
+        restaurantId: restaurantTable.id,
+        name: restaurantTable.name,
+        address: restaurantTable.address,
+        website: restaurantTable.website,
+        mapsUrl: restaurantTable.maps_url,
+        photo: restaurantTable.photo,
+      })
+      .from(favoriteTable)
+      .innerJoin(restaurantTable, eq(favoriteTable.restaurantId, restaurantTable.id))
+      .where(eq(favoriteTable.userId, userId));
+  };
+  

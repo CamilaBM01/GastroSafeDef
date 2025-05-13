@@ -1,5 +1,5 @@
  // tu conexión Drizzle
-import { eq, or, like } from "drizzle-orm";
+import { eq, or, like, count } from "drizzle-orm";
 import { favoriteTable, followerTable, restaurantTable, reviewTable, sessionTable, userTable } from "@/lib/schema"; // ajusta el path si es distinto
 import { db } from "@/lib/db";
 
@@ -98,6 +98,9 @@ export const insertEditUser = async(user:IUser):Promise<boolean>=>{
  * @returns {Promise<IUser | null>} - Una promesa que resuelve con un objeto `IUser` si el usuario es encontrado, o `null` si no lo es.
  */
 export const findUser = async (userId: number): Promise<IUser | null> => {
+  if (typeof userId !== 'number' || isNaN(userId)) {
+    throw new Error(`Invalid userId passed to findUser: ${userId}`);
+  }
   const user = await db
     .select()
     .from(userTable)
@@ -145,4 +148,39 @@ export const deleteUserById = async (userId: number) => {
     // Finalmente, eliminar al usuario
     await tx.delete(userTable).where(eq(userTable.id, userId));
   });
+};
+
+export const getUserStats = async (userId: number) => {
+  const userInfo = await db
+    .select({
+      id: userTable.id,
+      name: userTable.name,
+      surname: userTable.surname,
+      email: userTable.email,
+      digestive_condition: userTable.digestive_condition,
+      photo: userTable.photo,
+      role_id: userTable.role_id,
+      createdAt: userTable.created_at
+    })
+    .from(userTable)
+    .where(eq(userTable.id, userId))
+    .limit(1);
+
+  const reviewCount = await db
+    .select({ count: count() })
+    .from(reviewTable)
+    .where(eq(reviewTable.userId, userId));
+
+  const favoriteCount = await db
+    .select({ count: count() })
+    .from(favoriteTable)
+    .where(eq(favoriteTable.userId, userId));
+
+  if (userInfo.length === 0) return null;
+
+  return {
+    ...userInfo[0],
+    total_reviews: reviewCount[0].count,
+    total_favorites: favoriteCount[0].count,
+  };
 };
