@@ -130,4 +130,13 @@ export const getReviewsByRestaurant = async (restaurantId: number) => {
     .orderBy(desc(reviewTable.createdAt));
 };
 
+export const getRestaurantById = async (id: number): Promise<IRestaurant | null> => {
+  const result = await db
+    .select()
+    .from(restaurantTable)
+    .where(eq(restaurantTable.id, id))
+    .limit(1);
+
+  return result.length > 0 ? result[0] : null;
+}
 

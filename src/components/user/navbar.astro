@@ -1,14 +1,9 @@
 ---
 import { getUserFromSession } from "@/repository/users";
 
-const { id } = Astro.params;
-let user = null;
-
-if (id && !isNaN(Number(id))) {
-  // Aquí deberías hacer la consulta al usuario con el id
-  user = await getUserFromSession(id);
-} else {
-  console.warn("ID inválido:", id);
+const { user } = Astro.props;
+if (!user) {
+  throw new Error("❌ El componente Navbar requiere el prop `user` definido.");
 }
 ---
 
@@ -24,13 +19,13 @@ if (id && !isNaN(Number(id))) {
     <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-cta">
       <ul class="flex flex-col font-medium p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-backgroundgreen md:space-x-8 rtl:space-x-reverse md:flex-row md:mt-0 md:border-0 md:bg-backgroundgreen ">
         <li>
-          <a href="/user/me/myInfo" class="block py-2 px-3 md:p-0 text-gray-900 hover:bg-hoverBottons md:hover:bg-transparent md:hover:text-hoverBottons font-[500]" aria-current="page">My info</a>
+          <a href={`/user/me/${user.id}`}  class="block py-2 px-3 md:p-0 text-gray-900 hover:bg-hoverBottons md:hover:bg-transparent md:hover:text-hoverBottons font-[500]" aria-current="page">My info</a>
         </li>
         <li>
           <a href="/user/reviews/reviewsPage" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-hoverBottons md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Reviews</a>
         </li>
           <li>
-            <a href={`/user/dashboard/${id}`} class="flex items-center space-x-3 rtl:space-x-reverse">
+            <a href={`/user/dashboard/${user.id}`} class="flex items-center space-x-3 rtl:space-x-reverse">
               <img class="mx-auto h-20 w-auto" src="/images/logo.png" alt="Gastrosafe" >
             </a>
           </li>

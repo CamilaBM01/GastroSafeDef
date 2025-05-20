@@ -2,22 +2,52 @@
 import { eq, or, like, count } from "drizzle-orm";
 import { favoriteTable, followerTable, restaurantTable, reviewTable, sessionTable, userTable } from "@/lib/schema"; // ajusta el path si es distinto
 import { db } from "@/lib/db";
+import { createHash } from "crypto";
 
-export async function getUserFromSession(sessionId: string) {
-  const session = await db.select().from(sessionTable).where(eq(sessionTable.id, sessionId)).limit(1);
+// export async function getUserFromSession(sessionId: string) {
+//   console.log("🔍 Buscando sesión con ID:", sessionId);
+//   const session = await db.select().from(sessionTable).where(eq(sessionTable.id, sessionId)).limit(1);
+//   console.log("📄 Resultado sesión:", session);
+//   if (session.length === 0) return null;
+
+//   const user = await db
+//     .select({
+//       id: userTable.id,
+//       name: userTable.name,
+//       email: userTable.email,
+//     })
+//     .from(userTable)
+//     .where(eq(userTable.id, session[0].userId))
+//     .limit(1);
+    
+//   console.log("✅ Usuario encontrado:", user);
+//   return user[0] || null;
+// }
+
+/**
+ * Recupera un usuario a partir del token de sesión.
+ *
+ * @param token - Token de sesión recibido desde la cookie.
+ * @returns El usuario correspondiente, o null si no existe.
+ */
+export async function getUserFromSession(token: string) {
+  const sessionId = createHash('sha256').update(token).digest('hex');
+
+  const session = await db
+    .select()
+    .from(sessionTable)
+    .where(eq(sessionTable.id, sessionId))
+    .limit(1);
+
   if (session.length === 0) return null;
 
   const user = await db
-    .select({
-      id: userTable.id,
-      name: userTable.name,
-      email: userTable.email,
-    })
+    .select()
     .from(userTable)
     .where(eq(userTable.id, session[0].userId))
     .limit(1);
 
-  return user[0] || null;
+  return user[0] ?? null;
 }
 
 export const insertUser = async(user:IUser):Promise<boolean>=>{

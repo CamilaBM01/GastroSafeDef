@@ -1,0 +1,52 @@
+---
+import { findUser, insertEditUser } from "@/repository/users";
+import LayoutUser from "@/layouts/LayoutUser.astro";
+import MyInfoPanel from "@/components/user/myinfo/myInfoPanel.astro";
+import { getSession } from "@/repository/session";
+import { countReviewsByUser } from "@/repository/reviews";
+import { updateUser } from "@/services/update/updateUser";
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+const sessionId = Astro.cookies.get("session")?.value;
+if (!sessionId) {
+  return Astro.redirect("/login");
+}
+// Obtenemos la sesión desde la cookie
+const session = await getSession(sessionId);
+if (!session) {
+  return Astro.redirect("/login");
+}
+// Usamos el userId de la sesión, no el de la URL
+const user = await findUser(session.userId);
+if (!user) {
+  return Astro.redirect("/login");
+}
+//página que ya tiene user cargado
+const reviewCount = await countReviewsByUser(user.id!);
+
+
+
+if (Astro.request.method === "POST") {
+  try {
+    let data = await Astro.request.formData();
+    const formId = data.get("formId");
+    if (formId === "edit_user") {
+      const updatedUser = await updateUser(data);
+      await insertEditUser(updatedUser);
+    
+    }else {
+      console.error("Form ID no reconocido:", formId); // Depuración
+    }
+    
+  }catch (error) {
+      console.error("Error procesando el form", error);
+  }
+}
+
+---
+<LayoutUser user={user}>
+    <MyInfoPanel usuario={user} reviewCount={reviewCount} />
+</LayoutUser>

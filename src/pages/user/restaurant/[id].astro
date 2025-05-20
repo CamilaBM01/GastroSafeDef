@@ -1,0 +1,32 @@
+---
+import RestaurantInfo from "@/components/user/restaurant/restaurantInfo.astro";
+import LayoutUser from "@/layouts/LayoutUser.astro";
+import { getRestaurantById } from "@/repository/restaurants";
+import { getUserFromSession } from "@/repository/users";
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+const cookies = Astro.cookies;
+const sessionId = cookies.get("session")?.value;
+
+let user = null;
+if (sessionId) {
+  user = await getUserFromSession(sessionId);
+}
+
+
+
+const { params } = Astro;
+const id = Number(params.id); //Aquí "params.id" será '5' si la URL es /restaurant/5
+
+const restaurant = await getRestaurantById(id);
+
+if (!restaurant) {
+  throw new Error("Restaurante no encontrado");
+}
+---
+<LayoutUser user={user}>
+    <RestaurantInfo restaurant={restaurant}/>
+</LayoutUser>

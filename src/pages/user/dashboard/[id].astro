@@ -8,17 +8,18 @@ if (Astro.locals.user === null) {
   return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
 }
 
-const cookies = Astro.cookies;
-const sessionId = cookies.get("session")?.value;
-
-let user = null;
-if (sessionId) {
-  user = await getUserFromSession(sessionId);
+// ⚠️ Evita el acceso si no hay cookie
+const sessionToken = Astro.cookies.get("session")?.value;
+if (!sessionToken) {
+  return Astro.redirect('/login');
 }
 
-
+const user = await getUserFromSession(sessionToken);
+if (!user) {
+  return Astro.redirect('/login');
+}
 
 ---
-<LayoutUser>
-    <DashboardPanel>
+<LayoutUser user={user}>
+    <DashboardPanel user={user}>
 </LayoutUser>
