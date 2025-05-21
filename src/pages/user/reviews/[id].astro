@@ -1,0 +1,29 @@
+---
+import { getUserFromSession } from "@/repository/users";
+import LayoutUser from "@/layouts/LayoutUser.astro";
+import ReviewsList from "@/components/user/reviews/reviewsList.astro";
+import { getReviewsByUser } from "@/repository/reviews";
+
+
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+const cookies = Astro.cookies;
+const sessionId = cookies.get("session")?.value;
+
+let user = null;
+if (sessionId) {
+  user = await getUserFromSession(sessionId);
+}
+if (!user) {
+  return Astro.redirect('/login');
+}
+const reviews = await getReviewsByUser(user.id);
+
+
+---
+<LayoutUser user={user}>
+    <ReviewsList  reviews={reviews} />
+</LayoutUser>

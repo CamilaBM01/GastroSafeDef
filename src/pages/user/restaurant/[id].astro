@@ -1,8 +1,10 @@
 ---
 import RestaurantInfo from "@/components/user/restaurant/restaurantInfo.astro";
 import LayoutUser from "@/layouts/LayoutUser.astro";
-import { getRestaurantById } from "@/repository/restaurants";
+import { getRestaurantById, getReviewsByRestaurant } from "@/repository/restaurants";
+import { insertReview } from "@/repository/reviews";
 import { getUserFromSession } from "@/repository/users";
+import { createReview } from "@/services/createReview";
 
 if (Astro.locals.user === null) {
   return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
@@ -22,11 +24,23 @@ const { params } = Astro;
 const id = Number(params.id); //Aquí "params.id" será '5' si la URL es /restaurant/5
 
 const restaurant = await getRestaurantById(id);
+const reviews = await getReviewsByRestaurant(id);
 
 if (!restaurant) {
   throw new Error("Restaurante no encontrado");
 }
+
+
+// 🚨 SI ES POST, INSERTAR LA REVIEW
+if (Astro.request.method === "POST") {
+  let data = await Astro.request.formData();
+  const review:IReview = await createReview(data);
+
+  await insertReview(review);
+
+  return Astro.redirect(`/user/restaurant/${restaurant.id}`);
+}
 ---
 <LayoutUser user={user}>
-    <RestaurantInfo restaurant={restaurant}/>
+    <RestaurantInfo restaurant={restaurant} user={user} reviews={reviews} />
 </LayoutUser>

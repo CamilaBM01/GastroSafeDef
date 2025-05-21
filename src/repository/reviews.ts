@@ -147,4 +147,33 @@ export const getAllReviews = async () => {
       .innerJoin(restaurantTable, eq(favoriteTable.restaurantId, restaurantTable.id))
       .where(eq(favoriteTable.userId, userId));
   };
+
+  export const insertReview = async(review:IReview):Promise<boolean>=>{
+    try {
+      const result = await db.insert(reviewTable).values(review);
+      console.log(result);
+      return true;
+    } catch (error) {
+      console.log(error);
+      return false;
+    }
+  }
+
+
+  export const getReviewsByUser = async (userId: number) => {
+    return await db
+      .select({
+        id: reviewTable.id,
+        title: reviewTable.title,
+        description: reviewTable.description,
+        suitable: reviewTable.suitable,
+        createdAt: reviewTable.createdAt,
+        restaurantName: restaurantTable.name,
+        restaurantId: restaurantTable.id,
+      })
+      .from(reviewTable)
+      .innerJoin(restaurantTable, eq(reviewTable.restaurantId, restaurantTable.id))
+      .where(eq(reviewTable.userId, userId))
+      .orderBy(reviewTable.createdAt);
+  };
   

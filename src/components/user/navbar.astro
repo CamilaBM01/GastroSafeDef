@@ -22,13 +22,13 @@ if (!user) {
           <a href={`/user/me/${user.id}`}  class="block py-2 px-3 md:p-0 text-gray-900 hover:bg-hoverBottons md:hover:bg-transparent md:hover:text-hoverBottons font-[500]" aria-current="page">My info</a>
         </li>
         <li>
-          <a href="/user/reviews/reviewsPage" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-hoverBottons md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Reviews</a>
+          <a href={`/user/reviews/${user.id}`}class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-hoverBottons md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Reviews</a>
         </li>
-          <li>
-            <a href={`/user/dashboard/${user.id}`} class="flex items-center space-x-3 rtl:space-x-reverse">
-              <img class="mx-auto h-20 w-auto" src="/images/logo.png" alt="Gastrosafe" >
-            </a>
-          </li>
+        <li>
+          <a href={`/user/dashboard/${user.id}`} class="flex items-center space-x-3 rtl:space-x-reverse">
+            <img class="mx-auto h-20 w-auto" src="/images/logo.png" alt="Gastrosafe" >
+          </a>
+        </li>
         <li>
           <a href="/user/favourites/favs" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Favorites</a>
         </li>

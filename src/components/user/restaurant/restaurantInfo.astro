@@ -1,7 +1,8 @@
 ---
+import AddReviewModal from "@/components/modals/review/AddReviewModal.astro";
 import { getRestaurantById } from "@/repository/restaurants";
 
-const { restaurant } = Astro.props;
+const { restaurant, user, reviews } = Astro.props;
 
 
 ---
@@ -44,37 +45,43 @@ const { restaurant } = Astro.props;
     <div class="px-6 pt-4 pb-2">
         <div class="flex justify-between items-center mb-4">
             <h2 class="text-2xl font-semibold text-slate-800">Reviews</h2>
-            <a href="#" class="text-sm text-sky-600 hover:text-sky-700 hover:underline whitespace-nowrap">Add Review</a>
+            <button
+            data-modal-target="addReviewModal"
+            data-modal-toggle="addReviewModal"
+            type="button"
+            class="text-sm text-sky-600 hover:text-sky-700 hover:underline whitespace-nowrap"
+            >
+            Add Review
+            </button>
+
+            
         </div>
     </div>
 
     <!-- Lista de Cards de Reseñas -->
-    <div class="px-6 pb-6 space-y-4">
-        <!-- Card de Reseña 1 -->
-        <div class="bg-amber-50 p-4 rounded-lg shadow-sm">
-            <div class="flex items-center mb-2">
-                <h3 class="font-semibold text-slate-800">Pepe Pérez</h3>
-                <span class="ml-3 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">Vegano</span>
-            </div>
-            <p class="text-sm text-slate-700 mb-2 leading-relaxed">
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent nec massa felis. Nunc bibendum nisl quis tempus vehicula. Sed a quam eu metus sodales vestibulum eu a enim. Vestibulum interdum at purus non consectetur. Donec semper diam euismod diam dictum, sed ultricies sapien interdum. Suspendisse ipsum odio, sodales quis rutrum a, iaculis nec neque. Quisque luctus velit augue, eu finibus velit porta eu. Fusce varius orci pharetra, consequat magna quis, ultrices metus.
-            </p>
-            <p class="text-sm font-medium text-slate-600">8/10</p>
+    <!-- Lista de Cards de Reseñas -->
+<div class="px-6 pb-6 space-y-4">
+    {reviews.length === 0 && (
+      <p class="text-slate-500 text-sm">Todavía no hay reseñas para este restaurante.</p>
+    )}
+  
+    {reviews.map((review: ReviewWithUser) => (
+      <div class="bg-amber-50 p-4 rounded-lg shadow-sm">
+        <div class="flex items-center mb-2">
+          <h3 class="font-semibold text-slate-800">{review.userName} {review.userSurname}</h3>
+          {review.digestiveCondition && (
+            <span class="ml-3 px-2 py-0.5 bg-green-100 text-green-700 text-xs font-medium rounded-full">
+              {review.digestiveCondition}
+            </span>
+          )}
         </div>
-
-        <!-- Card de Reseña 2 (ejemplo) -->
-        <div class="bg-amber-50 p-4 rounded-lg shadow-sm">
-            <div class="flex items-center mb-2">
-                <h3 class="font-semibold text-slate-800">Ana López</h3>
-                <span class="ml-3 px-2 py-0.5 bg-blue-100 text-blue-700 text-xs font-medium rounded-full">Recomendado</span>
-            </div>
-            <p class="text-sm text-slate-700 mb-2 leading-relaxed">
-                ¡Los pokes son deliciosos y muy frescos! El ambiente es genial y el personal muy amable. Volveré seguro.
-            </p>
-            <p class="text-sm font-medium text-slate-600">9.5/10</p>
-        </div>
-        
-        <!-- Puedes añadir más cards de reseña aquí -->
-    </div>
+        <p class="text-sm text-slate-700 mb-2 leading-relaxed">
+          {review.description}
+        </p>
+        <p class="text-sm font-medium text-slate-600">Menú adecuado: {review.suitable ? "Sí" : "No"}</p>
+      </div>
+    ))}
+  </div>
 </div>
 <!-- FIN DEL COMPONENTE DE LA TARJETA -->
+<AddReviewModal user={user} restaurant = {restaurant} />
