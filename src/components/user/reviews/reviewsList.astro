@@ -1,38 +1,10 @@
 ---
+import DeleteReviewModal from "@/components/modals/review/deleteReviewModal.astro";
 import EditReviewModal from "@/components/modals/review/editReviewModal.astro";
 
 const { reviews, user} = Astro.props;
 ---
 <body class="bg-[#E9EEEB] text-slate-800 antialiased">
-
-  <!-- START: Reusable Navbar -->
-  <nav class="py-5">
-      <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center">
-          <!-- Left Links -->
-          <div class="flex items-center space-x-5 md:space-x-7">
-              <a href="#" class="text-slate-600 hover:text-slate-900 font-medium transition-colors duration-200 ease-in-out">Mi Perfil</a>
-              <a href="#" class="text-slate-600 hover:text-slate-900 font-medium transition-colors duration-200 ease-in-out">Mis Reseñas</a>
-          </div>
-
-          <!-- Logo -->
-          <div class="flex flex-col items-center text-center absolute left-1/2 transform -translate-x-1/2">
-              <svg class="mx-auto h-10 w-10 text-slate-700" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                  <path fill-rule="evenodd" d="M11.54 22.351l.07.04.028.016a.76.76 0 00.723 0l.028-.015.071-.041a16.975 16.975 0 001.144-.742 19.58 19.58 0 002.683-2.282c1.944-1.99 3.963-4.98 3.963-8.827a8.25 8.25 0 00-16.5 0c0 3.846 2.02 6.837 3.963 8.827a19.58 19.58 0 002.682 2.282 16.975 16.975 0 001.145.742zM12 13.5a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd" />
-                  <!-- Utensilios simplificados (reemplazar con tu SVG real) -->
-                  <path d="M11.25 10.5 V12.75 M12.75 10.5 V12.75 M10.5 11.25 H13.5" stroke="white" stroke-width="1.2" stroke-linecap="round"/>
-              </svg>
-              <span class="text-lg font-bold text-slate-800 tracking-tight">GASTROSAFE</span>
-          </div>
-
-          <!-- Right Links -->
-          <div class="flex items-center space-x-5 md:space-x-7">
-              <a href="#" class="text-slate-600 hover:text-slate-900 font-medium transition-colors duration-200 ease-in-out">Favoritos</a>
-              <a href="#" class="text-slate-600 hover:text-slate-900 font-medium transition-colors duration-200 ease-in-out">Sign Out</a>
-          </div>
-      </div>
-  </nav>
-  <!-- END: Reusable Navbar -->
-
   <main class="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
       <h1 class="text-3xl md:text-4xl font-bold text-slate-800 text-center mb-10">My Reviews</h1>
 
@@ -85,11 +57,8 @@ const { reviews, user} = Astro.props;
                       </svg>
                       
                   </button>
-                  <EditReviewModal review={review}
-      modalId={`editReviewModal-${review.id}`}
-      user={user} 
-    />
-                  <button class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-all duration-200 ease-in-out" aria-label="Eliminar reseña">
+                  <EditReviewModal review={review} modalId={`editReviewModal-${review.id}`} user={user} />
+                  <button type="button" data-modal-target={`deleteReviewModal-${review.id}`} data-modal-toggle={`deleteReviewModal-${review.id}`} class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-all duration-200 ease-in-out" aria-label="Eliminar reseña">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12.56 0c.342.052.682.107 1.022.166m0 0l-.346 9m4.788 0l.24-2.282" />
                       </svg>
@@ -103,6 +72,7 @@ const { reviews, user} = Astro.props;
                 Menú adecuado: {review.suitable ? 'Sí' : 'No'}
               </div>
             </article>
+            <DeleteReviewModal review={review} modalId={`deleteReviewModal-${review.id}`} user={user} />
           ))}
       </div>
   </main>
