@@ -2,7 +2,8 @@
 import { getUserFromSession } from "@/repository/users";
 import LayoutUser from "@/layouts/LayoutUser.astro";
 import ReviewsList from "@/components/user/reviews/reviewsList.astro";
-import { getReviewsByUser } from "@/repository/reviews";
+import { getReviewsByUser, insertEditReview } from "@/repository/reviews";
+import { updateReview } from "@/services/update/updateReview";
 
 
 
@@ -22,8 +23,25 @@ if (!user) {
 }
 const reviews = await getReviewsByUser(user.id);
 
-
+if (Astro.request.method === "POST") {
+  try {
+    let data = await Astro.request.formData();
+    const formId = data.get("formId");
+    if (formId === "edit_review") {
+      let data = await Astro.request.formData();   
+      const updatedReview= await updateReview(data);
+      await insertEditReview(updatedReview);
+      return Astro.redirect(`/user/reviews/${user.id}`);
+    
+    }else {
+      console.error("Form ID no reconocido:", formId); // Depuración
+    }
+    
+  }catch (error) {
+      console.error("Error procesando el form", error);
+  }
+}
 ---
 <LayoutUser user={user}>
-    <ReviewsList  reviews={reviews} />
+    <ReviewsList user={user} reviews={reviews} />
 </LayoutUser>

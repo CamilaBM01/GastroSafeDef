@@ -105,6 +105,15 @@ export const getAllReviews = async () => {
       await tx.delete(reviewTable).where(eq(reviewTable.id, reviewId));
     });
   };
+  export const deleteReview = async (id: number): Promise<boolean> => {
+    try {
+      await db.delete(reviewTable).where(eq(reviewTable.id, id));
+      return true;
+    } catch (error) {
+      console.error("Error al eliminar la reseña:", error);
+      return false;
+    }
+  };
 
   export const countReviewsByUser = async (userId: number) => {
     const result = await db
@@ -177,3 +186,36 @@ export const getAllReviews = async () => {
       .orderBy(reviewTable.createdAt);
   };
   
+
+export async function findReviewById(id: number) {
+  const [review] = await db
+    .select()
+    .from(reviewTable)
+    .where(eq(reviewTable.id, id));
+
+  return review;
+}
+
+export const insertEditReview = async (review: IReview): Promise<boolean> => {
+  try {
+    if (!review.id) {
+      throw new Error("El ID de la reseña es obligatorio para actualizar");
+    }
+
+    const result = await db
+      .update(reviewTable)
+      .set({
+        title: review.title,
+        description: review.description,
+        suitable: review.suitable,
+        updatedAt: new Date()
+      })
+      .where(eq(reviewTable.id, review.id));
+
+    console.log("Reseña actualizada:", result);
+    return true;
+  } catch (error) {
+    console.error("Error al actualizar la reseña:", error);
+    return false;
+  }
+};

@@ -4,7 +4,7 @@ export const updateRestaurant = async(data:FormData):Promise<IRestaurant> =>{
   console.log("ID después de convertir:", id);
     if (!id) throw new Error("El ID del restaurante es obligatorio para actualizar");
     return{
-        id,
+      id,
       name : data.get('name') as string ||  '',
       address : data.get('address') as string ||  '',
       website : data.get('website') as string ||  '',
