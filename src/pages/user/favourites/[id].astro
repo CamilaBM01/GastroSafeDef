@@ -1,0 +1,30 @@
+---
+import { getUserFromSession } from "@/repository/users";
+import LayoutUser from "@/layouts/LayoutUser.astro";
+import DashboardPanel from "@/components/user/dashboardPanel.astro";
+import FavsPanel from "@/components/user/favourites/favsPanel.astro";
+import { getFavoriteRestaurantsByUserId, listFavoriteRestaurantsByUserId } from "@/repository/favourites";
+
+
+if (Astro.locals.user === null) {
+  return Astro.redirect('/login'); // Redirigir a login si no hay usuario autenticado
+}
+
+const cookies = Astro.cookies;
+const sessionId = cookies.get("session")?.value;
+
+let user = null;
+if (sessionId) {
+  user = await getUserFromSession(sessionId);
+}
+if (!user) {
+  return Astro.redirect('/login');
+}
+
+const favRestaurants = await getFavoriteRestaurantsByUserId(user.id);
+
+const favorites = await listFavoriteRestaurantsByUserId(user.id);
+---
+<LayoutUser user={user}>
+    <FavsPanel user={user} favorites={favorites.map(f => f.restaurants)} >
+</LayoutUser>

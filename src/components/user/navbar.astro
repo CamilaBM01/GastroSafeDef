@@ -30,7 +30,7 @@ if (!user) {
           </a>
         </li>
         <li>
-          <a href="/user/favourites/favs" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Favorites</a>
+          <a href={`/user/favourites/${user.id}`}  class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Favorites</a>
         </li>
         <li>
             <a href="/api/logout" class="block py-2 px-3 md:p-0 text-gray-900 rounded-sm hover:bg-gray-100 md:hover:bg-transparent md:hover:text-hoverBottons font-[500]">Sign Out</a>

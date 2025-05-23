@@ -41,7 +41,9 @@ if (Astro.request.method === "POST") {
       console.error("Error procesando el form", error);
   }
 }
+const url = new URL(Astro.request.url);
+const searchQuery = url.searchParams.get("q") || "";
 ---
 <LayoutUser user={user}>
-    <ReviewsList user={user} reviews={reviews} />
+    <ReviewsList user={user} reviews={reviews} searchQuery={searchQuery} />
 </LayoutUser>

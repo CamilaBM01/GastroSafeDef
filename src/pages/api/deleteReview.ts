@@ -1,6 +1,6 @@
 import { deleteReview, deleteReviewById } from "@/repository/reviews";
 
-import type { APIContext, APIRoute } from "astro";
+import type { APIRoute } from "astro";
 
 export const POST: APIRoute = async ({ request }) => {
     const formData = await request.formData();

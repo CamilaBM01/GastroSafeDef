@@ -1,6 +1,5 @@
 ---
 import Search from "../common/Search.astro";
-import { heart } from "../images/images";
 import CardRestaurants from "./cardRestaurants.astro";
 const { user } = Astro.props;
 if (!user) throw new Error("Prop 'user' no definida en DashboardPanel");
@@ -8,14 +7,12 @@ if (!user) throw new Error("Prop 'user' no definida en DashboardPanel");
 <div class="bg-backgroundgreen py-8 flex items-center justify-center  md:py-12">
     <div class="mx-auto max-w-screen-xl px-4 2xl:px-0">
       <!-- Heading & Filters -->
-      <div class="mb-4 items-end justify-between space-y-4 sm:flex sm:space-y-0 md:mb-8">
-        <div class="flex items-center space-x-4">
+      <h1 class="text-3xl md:text-4xl font-bold text-slate-800 text-center mb-10">My Panel</h1>
          <Search/> 
-        </div>
-      </div>
+
       <div class="mb-4 grid gap-4 sm:grid-cols-2 md:mb-8 lg:grid-cols-3 xl:grid-cols-4">
         <!--CARD 1 -->
-        <CardRestaurants/>
+        <CardRestaurants user={user} />
       </div>
       <div class="w-full text-center">
         <button type="button" class="rounded-lg border border-gray-200 bg-white px-5 py-2.5 text-sm font-medium text-gray-900 hover:bg-gray-100 hover:text-primary-700 focus:z-10 focus:outline-none focus:ring-4 focus:ring-gray-100">Show more</button>

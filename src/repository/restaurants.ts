@@ -114,6 +114,7 @@ export const getReviewsByRestaurant = async (restaurantId: number) => {
   return await db
     .select({
       id: reviewTable.id,
+      userId: reviewTable.userId,
       title: reviewTable.title,
       description: reviewTable.description,
       suitable: reviewTable.suitable,

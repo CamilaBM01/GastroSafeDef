@@ -1,42 +1,41 @@
 ---
+import Search from "@/components/common/Search.astro";
 import DeleteReviewModal from "@/components/modals/review/deleteReviewModal.astro";
+import DeleteReviewUserModal from "@/components/modals/review/deleteReviewUserModal.astro";
 import EditReviewModal from "@/components/modals/review/editReviewModal.astro";
 
-const { reviews, user} = Astro.props;
----
-<body class="bg-[#E9EEEB] text-slate-800 antialiased">
-  <main class="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
-      <h1 class="text-3xl md:text-4xl font-bold text-slate-800 text-center mb-10">My Reviews</h1>
+const { reviews, user, searchQuery} = Astro.props;
+const filteredReviews = reviews.filter((review: any) => {
+  const query = searchQuery.toLowerCase();
+  return (
+    review.title.toLowerCase().includes(query) ||
+    review.description.toLowerCase().includes(query) ||
+    review.restaurantName.toLowerCase().includes(query)
+  );
+});
 
-      <!-- Search Bar -->
-      <div class="max-w-lg mx-auto mb-12">
-          <div class="relative">
-              <input 
-                  type="text" 
-                  placeholder="Buscar Restaurante" 
-                  class="w-full py-3 px-5 pr-14 text-slate-700 bg-white border border-slate-300 rounded-full shadow-sm focus:ring-2 focus:ring-teal-500 focus:border-teal-500 outline-none transition-shadow duration-200 ease-in-out placeholder-slate-400"
-              >
-              <button class="absolute inset-y-0 right-0 flex items-center justify-center px-5 text-slate-400 hover:text-teal-600 transition-colors duration-200 ease-in-out" aria-label="Buscar">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
-                      <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z" />
-                  </svg>
-              </button>
-          </div>
-      </div>
-
-      <!-- Reviews List -->
-      <div class="space-y-6 md:space-y-8">
-          
-          <!-- Review Card Example 1 -->
-          {reviews.map((review: {
-            id: number;
+interface IReviewWithRestaurant {
+  id: number;
             title: string;
             description: string;
             suitable: boolean;
             createdAt: Date;
             restaurantName: string;
             restaurantId: number;
-          }) => (
+}
+---
+<body class="bg-[#E9EEEB] text-slate-800 antialiased">
+  <main class="container mx-auto py-10 px-4 sm:px-6 lg:px-8">
+      <h1 class="text-3xl md:text-4xl font-bold text-slate-800 text-center mb-10">My Reviews</h1>
+
+      <!-- Search Bar -->
+      <Search searchQuery={searchQuery}/>
+
+      <!-- Reviews List -->
+      <div class="space-y-6 md:space-y-8">
+          
+          <!-- Review Card Example 1 -->
+          {filteredReviews.map((review: IReviewWithRestaurant) => (
             <article class="bg-white p-5 md:p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 ease-in-out">
               <div class="flex justify-between items-center mb-2">
                 <div class="flex items-baseline">
@@ -58,11 +57,12 @@ const { reviews, user} = Astro.props;
                       
                   </button>
                   <EditReviewModal review={review} modalId={`editReviewModal-${review.id}`} user={user} />
-                  <button type="button" data-modal-target={`deleteReviewModal-${review.id}`} data-modal-toggle={`deleteReviewModal-${review.id}`} class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-all duration-200 ease-in-out" aria-label="Eliminar reseña">
+                  <button data-modal-target={`deleteReviewModal-${review.id}`} data-modal-toggle={`deleteReviewModal-${review.id}`} class="text-red-500 hover:text-red-700 p-1 rounded-full hover:bg-red-50 transition-all duration-200 ease-in-out" aria-label="Eliminar reseña">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" class="w-5 h-5">
                           <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12.56 0c.342.052.682.107 1.022.166m0 0l-.346 9m4.788 0l.24-2.282" />
                       </svg>
                   </button>
+                  <DeleteReviewUserModal review={review} modalId={`deleteReviewModal-${review.id}`} user={user} />
                 </div>
               </div>
               <p class="text-sm text-slate-600 leading-relaxed mb-3">
@@ -72,7 +72,7 @@ const { reviews, user} = Astro.props;
                 Menú adecuado: {review.suitable ? 'Sí' : 'No'}
               </div>
             </article>
-            <DeleteReviewModal review={review} modalId={`deleteReviewModal-${review.id}`} user={user} />
+            
           ))}
       </div>
   </main>

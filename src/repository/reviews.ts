@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { favoriteTable, restaurantTable, reviewTable, userTable } from "@/lib/schema";
-import { count, desc, eq, or } from "drizzle-orm";
+import { count, desc, eq, like, or } from "drizzle-orm";
 
 /**
  * Obtiene todas las reseñas del sistema, incluyendo la información del usuario que la creó
@@ -218,4 +218,30 @@ export const insertEditReview = async (review: IReview): Promise<boolean> => {
     console.error("Error al actualizar la reseña:", error);
     return false;
   }
+};
+
+/**
+ * Función asíncrona para obtener la lista de reseñas desde la base de datos.
+ * Si se pasa un "query" (término de búsqueda), filtra las reseñas por título o descripción.
+ * Si no se pasa un "query", devuelve todas las reseñas.
+ * 
+ * @param {string} [query] - Término de búsqueda que se usará para filtrar las reseñas (título o descripción).
+ * @returns {Promise} - Una promesa que resuelve con la lista de reseñas encontradas según el filtro aplicado o todas si no se pasa filtro.
+ */
+export const listReviews = async (query?: string) => {
+  if (!query) {
+    return await db.select().from(reviewTable);
+  }
+
+  const q = `%${query}%`;
+
+  return await db
+    .select()
+    .from(reviewTable)
+    .where(
+      or(
+        like(reviewTable.title, q),
+        like(reviewTable.description, q)
+      )
+    );
 };

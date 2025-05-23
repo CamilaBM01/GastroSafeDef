@@ -127,12 +127,12 @@ console.log('USER ID', userId);
               </div>
             </div>
           </div>
-          
+          <DeleteReviewModal user={user} review={review} modalId={`deleteReviewModal-${review.id}`} />
            ))}
          <!--FIN reseña1-->
         
        </div>
-       <DeleteReviewModal user={user} review={review}/>
+       
        <DeleteModal user={user}/>
        <UpdateUserModal user={user}/>
        

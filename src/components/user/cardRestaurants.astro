@@ -1,12 +1,18 @@
 ---
 import { listRestaurants } from "@/repository/restaurants";
-import { heart } from "../images/images";
+import { coraLleno, coraVacio } from "../images/images";
+import { getFavoritesByUserId } from "@/repository/favourites";
+const { user } = Astro.props;
 // Obtener el término de búsqueda desde la URL (query string)
 const url = new URL(Astro.request.url);
 const searchQuery = url.searchParams.get("q") || "";
 
 // Obtener la lista de restaurantes, pasando el término de búsqueda si existe
 const restaurants = await listRestaurants(searchQuery);
+
+
+//
+const favorites = await getFavoritesByUserId(user.id);
 ---
  <!--CARD 1 -->
  {restaurants.map(restaurant => (
@@ -62,11 +68,48 @@ const restaurants = await listRestaurants(searchQuery);
         <div class="mt-4 flex items-center justify-between gap-4">
           <p class="text-2xl font-extrabold leading-tight text-gray-900 "></p>
 
-          <button type="button" class="inline-flex items-center rounded-lg  px-5 py-2.5 text-sm font-medium text-white hover:bg-gray-100 focus:outline-none  ">
-            <span set:html={heart}/>
+          <button aria-label="Añadir a favoritos"
+            class="transition transform duration-200 hover:scale-110 ml-3 text-slate-400 hover:text-pink-500"
+            data-fav
+            data-user-id={user.id}
+            data-restaurant-id={restaurant.id}
+            data-cora-lleno={coraLleno}
+            data-cora-vacio={coraVacio}>
+            <span set:html={favorites.includes(restaurant.id) ? coraLleno : coraVacio}></span>
           </button>
         </div>
       </div>
     </a>
   </div>
   ))}
+
+<script type="module">
+  document.addEventListener("click", async (e) => {
+    const button = e.target.closest("button[data-fav]");
+    if (!button) return;
+
+    const restaurantId = button.dataset.restaurantId;
+    const userId = button.dataset.userId;
+    const coraLleno = button.dataset.coraLleno;
+    const coraVacio = button.dataset.coraVacio;
+    const heartSpan = button.querySelector("span");
+
+    const form = new FormData();
+    form.append("userId", userId);
+    form.append("restaurantId", restaurantId);
+
+    try {
+      const res = await fetch("/api/favorites/toggle", {
+        method: "POST",
+        body: form,
+      });
+
+      const result = await res.json();
+
+      // Cambia el icono visual
+      heartSpan.innerHTML = result.added ? coraLleno : coraVacio;
+    } catch (err) {
+      console.error("Error al actualizar favorito:", err);
+    }
+  });
+</script>
