@@ -43,7 +43,7 @@ const users = await listUsers(searchQuery);
         <a href={`/admin/users/userDetails/${user.id}`} class="block">
           <div class="border border-gray-200 rounded-md p-4 hover:shadow">
             {user.photo && (
-              <img src={user.photo} alt="Foto de perfil" class="w-20 h-20 rounded-full mb-2 object-cover" />
+              <img src={`/images/${user.photo || 'perfil1.jpg'}`}  alt="Foto de perfil" class="w-20 h-20 rounded-full mb-2 object-cover" />
             )}
             <h3 class="mb-2 text-xl font-bold">{user.name} {user.surname}</h3>
             <p class="text-gray-500">{user.email}</p>

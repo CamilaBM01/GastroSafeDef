@@ -7,6 +7,11 @@ import { findUser } from "@/repository/users";
 const { id } = Astro.params;
 const {userId} = Astro.props;
 
+if (!id || isNaN(Number(id))) {
+  console.error(`ID inválido recibido en params: ${id}`);
+  return Astro.redirect("/404");
+}
+
 const user = await findUser(+id!);
 if (!user) {
   return Astro.redirect("/404"); 
