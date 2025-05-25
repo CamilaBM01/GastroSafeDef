@@ -27,8 +27,7 @@ if (Astro.request.method === "POST") {
   try {
     let data = await Astro.request.formData();
     const formId = data.get("formId");
-    if (formId === "edit_review") {
-      let data = await Astro.request.formData();   
+    if (formId === "update_review") {
       const updatedReview= await updateReview(data);
       await insertEditReview(updatedReview);
       return Astro.redirect(`/user/reviews/${user.id}`);

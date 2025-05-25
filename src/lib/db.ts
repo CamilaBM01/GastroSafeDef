@@ -14,7 +14,7 @@ const connection = await mysql.createConnection({
   host: process.env.DB_HOST,     // 'localhost', que es el host de tu DB
   user: process.env.DB_USER,     // 'camila', el nombre de usuario para la DB
   password: process.env.DB_PASSWORD, // '123456789', la contraseña de la DB
-  database: process.env.DB_NAME,    // 'gastro_safe', el nombre de la base de datos
+  database: process.env.DB_NAME,    // 'GastroSafe', el nombre de la base de datos
 });
 
 // 5. Crea la instancia de Drizzle ORM para trabajar con la base de datos

@@ -1,6 +1,6 @@
 import { db } from "@/lib/db";
 import { favoriteTable, restaurantTable, reviewTable, userTable } from "@/lib/schema";
-import { count, desc, eq, like, or } from "drizzle-orm";
+import { count, desc, eq, like, or, sql } from "drizzle-orm";
 
 /**
  * Obtiene todas las reseñas del sistema, incluyendo la información del usuario que la creó
@@ -244,4 +244,20 @@ export const listReviews = async (query?: string) => {
         like(reviewTable.description, q)
       )
     );
+};
+
+/**
+ * Devuelve un objeto con el número de reseñas por restaurante.
+ * Ej: { 1: 3, 2: 7 }
+ */
+export const getReviewCountsByRestaurant = async (): Promise<Record<number, number>> => {
+  const result = await db
+    .select({
+      restaurantId: reviewTable.restaurantId,
+      total: sql<number>`COUNT(*)`,
+    })
+    .from(reviewTable)
+    .groupBy(reviewTable.restaurantId);
+
+  return Object.fromEntries(result.map(r => [r.restaurantId, r.total]));
 };

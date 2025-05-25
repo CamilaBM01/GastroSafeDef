@@ -1,6 +1,6 @@
 ---
 import { coraLleno, coraVacio } from "@/components/images/images";
-import { getFavoritesByUserId } from "@/repository/favourites";
+import { getFavoritesByUserId, getFavoritesCountGrouped } from "@/repository/favourites";
 import { listRestaurants } from "@/repository/restaurants";
 
 const { user } = Astro.props;
@@ -8,6 +8,8 @@ const { user } = Astro.props;
 const allRestaurants = await listRestaurants();
 const favorites = await getFavoritesByUserId(user.id);
 const favRestaurants = allRestaurants.filter(r => favorites.includes(r.id));
+// Obtener los favoritos de cada restaurante
+const favoritesCountByRestaurant = await getFavoritesCountGrouped();
 ---
 {favRestaurants.map(restaurant => (
   <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm">
@@ -36,6 +38,7 @@ const favRestaurants = allRestaurants.filter(r => favorites.includes(r.id));
         </ul>
 
         <div class="mt-4 flex items-center justify-between gap-4">
+          <p class="text-sm text-gray-500 mt-1">{favoritesCountByRestaurant[restaurant.id] ?? 0} guardados</p>
           <button aria-label="Añadir a favoritos"
             class="transition transform duration-200 hover:scale-110 ml-3 text-slate-400 hover:text-pink-500"
             data-fav

@@ -1,7 +1,7 @@
 ---
 import { listRestaurants } from "@/repository/restaurants";
 import { coraLleno, coraVacio } from "../images/images";
-import { getFavoritesByUserId } from "@/repository/favourites";
+import { getFavoritesByUserId, getFavoritesCountGrouped } from "@/repository/favourites";
 const { user } = Astro.props;
 // Obtener el término de búsqueda desde la URL (query string)
 const url = new URL(Astro.request.url);
@@ -11,13 +11,15 @@ const searchQuery = url.searchParams.get("q") || "";
 const restaurants = await listRestaurants(searchQuery);
 
 
-//
+// Restaurantes favoritos del usuario autenticado
 const favorites = await getFavoritesByUserId(user.id);
+// Obtener los favoritos de cada restaurante
+const favoritesCountByRestaurant = await getFavoritesCountGrouped();
 ---
  <!--CARD 1 -->
  {restaurants.map(restaurant => (
  <div class="rounded-lg border border-gray-200 bg-white p-6 shadow-sm ">
-    <a href={`/user/restaurant/${restaurant.id}`}>
+    
       <div class="h-56 w-full">
           {restaurant.photo && (
                 <img 
@@ -28,33 +30,8 @@ const favorites = await getFavoritesByUserId(user.id);
           )}
       </div>
       <div class="pt-6">  
-        <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline">{restaurant.name}</a>
-        <div class="mt-2 flex items-center gap-2">
-          <div class="flex items-center">
-            <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
-            </svg>
-
-            <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
-            </svg>
-
-            <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
-            </svg>
-
-            <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
-            </svg>
-
-            <svg class="h-4 w-4 text-yellow-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M13.8 4.2a2 2 0 0 0-3.6 0L8.4 8.4l-4.6.3a2 2 0 0 0-1.1 3.5l3.5 3-1 4.4c-.5 1.7 1.4 3 2.9 2.1l3.9-2.3 3.9 2.3c1.5 1 3.4-.4 3-2.1l-1-4.4 3.4-3a2 2 0 0 0-1.1-3.5l-4.6-.3-1.8-4.2Z" />
-            </svg>
-          </div>
-
-          <p class="text-sm font-medium text-gray-900 ">5.0</p>
-          <p class="text-sm font-medium text-gray-500 ">(455)</p>
-        </div>
+        <a href={`/user/restaurant/${restaurant.id}`} class="text-lg font-semibold leading-tight text-gray-900 hover:underline">{restaurant.name}</a>
+        
 
         <ul class="mt-2 flex items-center gap-4">
           <li class="flex items-center gap-2">
@@ -66,8 +43,7 @@ const favorites = await getFavoritesByUserId(user.id);
         </ul>
 
         <div class="mt-4 flex items-center justify-between gap-4">
-          <p class="text-2xl font-extrabold leading-tight text-gray-900 "></p>
-
+          <p class="text-sm text-gray-500 mt-1">{favoritesCountByRestaurant[restaurant.id] ?? 0} guardados</p>
           <button aria-label="Añadir a favoritos"
             class="transition transform duration-200 hover:scale-110 ml-3 text-slate-400 hover:text-pink-500"
             data-fav
@@ -79,7 +55,6 @@ const favorites = await getFavoritesByUserId(user.id);
           </button>
         </div>
       </div>
-    </a>
   </div>
   ))}
 

@@ -20,20 +20,30 @@ if (sessionId) {
 
 
 
+const method = Astro.request.method;
 const { params } = Astro;
-const id = Number(params.id); //Aquí "params.id" será '5' si la URL es /restaurant/5
+const id = Number(params.id);
+console.log(`🚩 ${method} /user/restaurant/${params.id}  →  id =`, id);
 
 const restaurant = await getRestaurantById(id);
+console.log("🚩 restaurant fetched:", restaurant);
 const reviews = await getReviewsByRestaurant(id);
 
 if (!restaurant) {
   throw new Error("Restaurante no encontrado");
 }
 
+if (Number.isNaN(id)) {
+  //  → aquí puedes redirigir o lanzar un 404 amigable
+  return Astro.redirect('/404');
+}
 
 // 🚨 SI ES POST, INSERTAR LA REVIEW
 if (Astro.request.method === "POST") {
   let data = await Astro.request.formData();
+  if (Number.isNaN(id)) {
+  throw new Error(`Parámetro de ruta inválido: params.id = ${params.id}`);
+}
   const review:IReview = await createReview(data);
 
   await insertReview(review);
