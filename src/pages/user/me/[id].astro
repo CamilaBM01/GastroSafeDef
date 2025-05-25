@@ -40,7 +40,7 @@ if (Astro.request.method === "POST") {
     }else {
       console.error("Form ID no reconocido:", formId); // Depuración
     }
-    
+    return Astro.redirect(`/user/me/${user.id}`);
   }catch (error) {
       console.error("Error procesando el form", error);
   }

@@ -11,7 +11,7 @@ const {usuario, reviewCount} = Astro.props;
     <div class="py-4 md:py-8">
       <div class="mb-4 space-y-4">
         <div class="flex space-x-4">
-          <img class="h-16 w-16 rounded-lg" src={usuario.photo} alt="Helene avatar" />
+          <img class="h-16 w-16 rounded-lg" src={`/images/${usuario.photo || 'perfil1.jpg'}`}   alt="Helene avatar" />
           <div>
             <h2 class="flex items-center text-xl font-bold leading-none text-gray-900 sm:text-2xl">{usuario.name} {usuario.surname}</h2>
             <span class="mb-2 inline-block rounded bg-primary-100 px-2.5 py-0.5 text-xs font-medium text-primary-800"> {usuario.email} </span>

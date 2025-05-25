@@ -1,5 +1,14 @@
 ---
 const {usuario} = Astro.props;
+const avatarOptions = [
+  { value: "perfil1.jpg", label: "Gato" },
+  { value: "perfil2.jpg", label: "Zorro" },
+  { value: "perfil4.jpg", label: "Smiley" },
+  { value: "perfil5.jpg", label: "Gato 2" },
+  { value: "perfil6.jpg", label: "Zorro 2" },
+  { value: "perfil7.jpg", label: "Robot" },
+  { value: "perfil8.jpg", label: "Smiley 2" },
+]
 ---
 <div id="accountInformationModal2" tabindex="-1" aria-hidden="true" class="max-h-auto fixed left-0 right-0 top-0 z-50 hidden h-[calc(100%-1rem)] max-h-full w-full items-center justify-center overflow-y-auto overflow-x-hidden antialiased md:inset-0">
     <div class="max-h-auto relative max-h-full w-full max-w-lg p-4">
@@ -41,6 +50,36 @@ const {usuario} = Astro.props;
                     <option value="Crohn">Crohn</option>
                     <option value="Other">Other</option>
                 </select>
+            </div>
+            <div>
+             <!--  <label for="photo" class="block mb-2 text-sm font-medium text-gray-900 ">Photo</label>
+              <select id="photo" name="photo" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 ">
+                  <option value="perfil1.jpg" selected={usuario.photo === "perfil1.jpg"}>Rosa</option>
+                  <option value="perfil2.jpg" selected={usuario.photo === "perfil2.jpg"}>Zorro</option>
+                  <option value="perfil4.jpg" selected={usuario.photo === "perfil4.jpg"}>Smiley</option>
+                  <option value="perfil5.jpg" selected={usuario.photo === "perfil5.jpg"}>Gato</option>
+                  <option value="perfil6.jpg" selected={usuario.photo === "perfil6.jpg"}>Zorro</option> 
+                  <option value="perfil7.jpg" selected={usuario.photo === "perfil7.jpg"}>Robot</option>
+                  <option value="perfil8.jpg" selected={usuario.photo === "perfil8.jpg"}>Smiley</option>
+              </select>
+          </div> -->
+          {avatarOptions.map(photo => (
+            <label class="cursor-pointer flex flex-col items-center">
+              <input 
+                type="radio" 
+                name="photo" 
+                value={photo.value}
+                class="hidden peer"
+                checked={usuario.photo === photo.value}
+              />
+              <img 
+                src={`/images/${photo.value}`} 
+                alt={photo.label} 
+                class="w-24 h-24 rounded-full border-4 peer-checked:border-blue-500 hover:opacity-80 transition"
+              />
+              <span class="text-sm mt-2">{photo.label}</span>
+            </label>
+          ))}
             </div>
           </div>
           <div class="border-t border-gray-200 pt-4 md:pt-5">
