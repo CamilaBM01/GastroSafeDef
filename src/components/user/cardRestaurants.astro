@@ -43,7 +43,7 @@ const favoritesCountByRestaurant = await getFavoritesCountGrouped();
         </ul>
 
         <div class="mt-4 flex items-center justify-between gap-4">
-          <p class="text-sm text-gray-500 mt-1">{favoritesCountByRestaurant[restaurant.id] ?? 0} guardados</p>
+          <p class="text-sm text-gray-500 mt-1">{favoritesCountByRestaurant[restaurant.id] ?? 0} saved</p>
           <button aria-label="Añadir a favoritos"
             class="transition transform duration-200 hover:scale-110 ml-3 text-slate-400 hover:text-pink-500"
             data-fav

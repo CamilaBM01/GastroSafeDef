@@ -24,7 +24,7 @@ const favoritesCountByRestaurant = await getFavoritesCountGrouped();
         )}
       </div>
       <div class="pt-6">  
-        <a href="#" class="text-lg font-semibold leading-tight text-gray-900 hover:underline">{restaurant.name}</a>
+        <a href={`/user/restaurant/${restaurant.id}`} class="text-lg font-semibold leading-tight text-gray-900 hover:underline">{restaurant.name}</a>
         <div class="mt-2 flex items-center gap-2">
         
         </div>
@@ -38,7 +38,7 @@ const favoritesCountByRestaurant = await getFavoritesCountGrouped();
         </ul>
 
         <div class="mt-4 flex items-center justify-between gap-4">
-          <p class="text-sm text-gray-500 mt-1">{favoritesCountByRestaurant[restaurant.id] ?? 0} guardados</p>
+          <p class="text-sm text-gray-500 mt-1">{favoritesCountByRestaurant[restaurant.id] ?? 0} saved</p>
           <button aria-label="Añadir a favoritos"
             class="transition transform duration-200 hover:scale-110 ml-3 text-slate-400 hover:text-pink-500"
             data-fav

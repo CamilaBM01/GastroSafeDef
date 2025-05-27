@@ -136,12 +136,10 @@ const reviews = await getReviewsByRestaurant(restaurantId);
       {reviews.map((review) => (
         <div class="py-6 border-t border-gray-200 first:border-0">
           <div class="grid gap-4 sm:grid-cols-1 lg:grid-cols-6">
-            
-            <!-- Foto del usuario -->
             <div class="lg:col-span-1">
               {review.userPhoto && (
                 <img
-                  src={review.userPhoto}
+                  src={`/images/${review.userPhoto || 'perfil1.jpg'}`}
                   alt={`${review.userName} ${review.userSurname}`}
                   class="w-16 h-16 rounded-md object-cover"
                 />
